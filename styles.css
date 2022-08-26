@@ -100,43 +100,6 @@ html, body {
         background: #fff;
         box-shadow: 0 2px 6px 0 rgba(197,186,186,0.50);
     }
-
-    .header__links-toggled {
-        display: flex;
-        animation: hideMenu .3s ease-in-out 1;
-        animation-fill-mode: both;
-    }
-
-    .header__links_opened {
-        display: flex;
-        visibility: visible;
-        animation: showMenu .3s ease-in-out 1;
-        animation-fill-mode: both;
-    }
-}
-
-@keyframes showMenu {
-    from {
-        transform: translateY(-1rem);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes hideMenu {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-    }
-    to {
-        transform: translateY(-1rem);
-        opacity: 0;
-        visibility: hidden;
-    }
 }
 
 .header__item {
