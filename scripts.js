@@ -5,8 +5,9 @@
         }
     }
 
+    
     function makeTabs(node) {
-        let selected = node.querySelector('.section__tab_active').dataset.id;
+        const select = node.querySelector('.section__select');
         const tabs = node.querySelectorAll('.section__tab');
         const list = [];
         const tabMap = new Map();
@@ -16,17 +17,11 @@
             tabMap.set(tabs[i].dataset.id, node.querySelector(`.section__tab[data-id=${tabs[i].dataset.id}]`)) ;
             panelMap.set(tabs[i].dataset.id, node.querySelector(`.section__panel[data-id=${tabs[i].dataset.id}]`));
         }
-        console.log(list);
-        const select = node.querySelector('.section__select');
-
-
         function selectTab(newId) {
             const newTab = tabMap.get(newId);
             const newPanel = panelMap.get(newId);
             const oldTab = node.querySelector('.section__tab_active');
             const oldPanel = node.querySelector('.section__panel:not(.section__panel_hidden)');
-
-            selected = newId;
 
             oldTab.classList.remove('section__tab_active');
             oldTab.setAttribute('aria-selected', 'false');
@@ -61,21 +56,22 @@
             }
 
             let index = list.indexOf(selected);
-            if (event.which === 37) {
-                // left
-                --index;
-            } else if (event.which === 39) {
-                // right
-                ++index;
-            } else if (event.which === 36) {
-                // home
-                index = 0;
-            } else if (event.which === 35) {
-                // end
-                index = list.length - 1;
-            } else {
-                return;
-            }
+            switch(event.which){
+                case 37:
+                    --index;
+                    break;
+                case 39:
+                    ++index;
+                    break;
+                case 36:
+                    index = 0;
+                    break;
+                case 35:
+                    index = list.length - 1;
+                    break;
+                default:
+                    return;
+            };
 
             if (index >= list.length) {
                 index = 0;
