@@ -8,7 +8,10 @@
     function makeTabs(node) {
         let selected = node.querySelector('.section__tab_active').dataset.id;
         const tabs = node.querySelectorAll('.section__tab');
-        const list = Array.from(tabs).map(node => node.dataset.id);
+        const list = [];
+        for(let i = 0; i < tabs.length; i++) {
+            list.push(tabs[i].dataset.id)
+        }
         const select = node.querySelector('.section__select');
 
         function selectTab(newId) {
@@ -93,7 +96,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        Array.from(document.querySelectorAll('.main__devices')).forEach(makeTabs);
-        Array.from(document.querySelectorAll('.header__menu')).forEach(makeMenu);
+        document.querySelectorAll('.main__devices').forEach(makeTabs);
+        document.querySelectorAll('.header__menu').forEach(makeMenu);
     });
 })();
