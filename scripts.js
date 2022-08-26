@@ -95,10 +95,15 @@
 
         node.addEventListener('click', () => {
             expanded = !expanded;
-            node.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-            headerText.textContent = expanded ? 'Закрыть меню' : 'Открыть меню';
+            if(expanded){
+                node.setAttribute('aria-expanded', 'true');
+                headerText.textContent = 'Закрыть меню';
+            }
+            else{
+                node.setAttribute('aria-expanded', 'false');
+                headerText.textContent = 'Открыть меню';
+            }
             links.classList.toggle('header__links_opened', expanded);
-            links.classList.add('header__links-toggled');
         });
     }
 

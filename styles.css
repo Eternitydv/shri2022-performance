@@ -119,8 +119,10 @@ html, body {
     from {
         transform: translateY(-1rem);
         opacity: 0;
+        visibility: hidden;
     }
     to {
+        visibility: visible;
         opacity: 1;
     }
 }
@@ -128,9 +130,11 @@ html, body {
 @keyframes hideMenu {
     from {
         opacity: 1;
+        visibility: visible;
     }
     to {
         transform: translateY(-1rem);
+        visibility: hidden;
         opacity: 0;
     }
 }
