@@ -1,1 +1,109 @@
-(()=>{function e(e,t,i){Array.from(e).forEach((e=>{e.addEventListener(t,i)}))}function t(t){let i=t.querySelector(".section__tab_active").dataset.id;const n=t.querySelectorAll(".section__tab"),a=[];for(let e=0;e<n.length;e++)a.push(n[e].dataset.id);const r=t.querySelector(".section__select");function c(e){const n=t.querySelector(`.section__tab[data-id=${e}]`),a=t.querySelector(`.section__panel[data-id=${e}]`),c=t.querySelector(".section__tab_active"),s=t.querySelector(".section__panel:not(.section__panel_hidden)");i=e,c.classList.remove("section__tab_active"),c.setAttribute("aria-selected","false"),c.removeAttribute("tabindex"),n.classList.add("section__tab_active"),n.setAttribute("aria-selected","true"),n.setAttribute("tabindex","0"),n.focus({preventScroll:!0}),s.classList.add("section__panel_hidden"),s.setAttribute("aria-hidden","true"),a.classList.remove("section__panel_hidden"),a.setAttribute("aria-hidden","false"),r.value=e}r.addEventListener("input",(()=>{c(r.value)})),e(n,"click",(e=>{c(e.target.dataset.id)})),e(n,"keydown",(e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;let t=a.indexOf(i);if(37===e.which)--t;else if(39===e.which)++t;else if(36===e.which)t=0;else{if(35!==e.which)return;t=a.length-1}t>=a.length?t=0:t<0&&(t=a.length-1),c(a[t]),e.preventDefault()}))}function i(e){let t=!1;const i=document.querySelector(".header__links");e.addEventListener("click",(()=>{t=!t,e.setAttribute("aria-expanded",t?"true":"false"),e.querySelector(".header__menu-text").textContent=t?"Закрыть меню":"Открыть меню",i.classList.toggle("header__links_opened",t),i.classList.add("header__links-toggled")}))}document.addEventListener("DOMContentLoaded",(()=>{document.querySelectorAll(".main__devices").forEach(t),document.querySelectorAll(".header__menu").forEach(i)}))})();
+(() => {
+    function bind(nodes, event, handler) {
+        for(let i = 0; i < nodes.length; i++) {
+            nodes[i].addEventListener(event, handler);
+        }
+    }
+
+    function makeTabs(node) {
+        let selected = node.querySelector('.section__tab_active').dataset.id;
+        const tabs = node.querySelectorAll('.section__tab');
+        const list = [];
+        const tabMap = new Map();
+        const panelMap = new Map();
+        for(let i = 0; i < tabs.length; i++) {
+            list.push(tabs[i].dataset.id);
+            tabMap.set(tabs[i].dataset.id, node.querySelector(`.section__tab[data-id=${tabs[i].dataset.id}]`)) ;
+            panelMap.set(tabs[i].dataset.id, node.querySelector(`.section__panel[data-id=${tabs[i].dataset.id}]`));
+        }
+        console.log(list);
+        const select = node.querySelector('.section__select');
+
+
+        function selectTab(newId) {
+            const newTab = tabMap.get(newId);
+            const newPanel = panelMap.get(newId);
+            const oldTab = node.querySelector('.section__tab_active');
+            const oldPanel = node.querySelector('.section__panel:not(.section__panel_hidden)');
+
+            selected = newId;
+
+            oldTab.classList.remove('section__tab_active');
+            oldTab.setAttribute('aria-selected', 'false');
+            oldTab.removeAttribute('tabindex');
+            newTab.classList.add('section__tab_active');
+            newTab.setAttribute('aria-selected', 'true');
+            newTab.setAttribute('tabindex', '0');
+            newTab.focus({
+                preventScroll: true
+            });
+
+            oldPanel.classList.add('section__panel_hidden');
+            oldPanel.setAttribute('aria-hidden', 'true');
+            newPanel.classList.remove('section__panel_hidden');
+            newPanel.setAttribute('aria-hidden', 'false');
+
+            select.value = newId;
+        }
+
+        select.addEventListener('input', () => {
+            selectTab(select.value);
+        });
+
+        bind(tabs, 'click', event => {
+            const newId = event.target.dataset.id;
+            selectTab(newId);
+        });
+
+        bind(tabs, 'keydown', event => {
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+                return;
+            }
+
+            let index = list.indexOf(selected);
+            if (event.which === 37) {
+                // left
+                --index;
+            } else if (event.which === 39) {
+                // right
+                ++index;
+            } else if (event.which === 36) {
+                // home
+                index = 0;
+            } else if (event.which === 35) {
+                // end
+                index = list.length - 1;
+            } else {
+                return;
+            }
+
+            if (index >= list.length) {
+                index = 0;
+            } else if (index < 0) {
+                index = list.length - 1;
+            }
+
+            selectTab(list[index]);
+            event.preventDefault();
+        });
+    }
+
+    function makeMenu(node) {
+        let expanded = false;
+        const links = document.querySelector('.header__links');
+        const headerText = node.querySelector('.header__menu-text');
+
+        node.addEventListener('click', () => {
+            expanded = !expanded;
+            node.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            headerText.textContent = expanded ? 'Закрыть меню' : 'Открыть меню';
+            links.classList.toggle('header__links_opened', expanded);
+            links.classList.add('header__links-toggled');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.main__devices').forEach(makeTabs);
+        document.querySelectorAll('.header__menu').forEach(makeMenu);
+    });
+})();
